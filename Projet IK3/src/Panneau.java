@@ -32,24 +32,66 @@ public class Panneau  extends JPanel{
 		      //TODO Importer l'image d'une brique 
 		      
 		      Image img2 = ImageIO.read(new File("src/images/brique.jpg"));
-		      //TODO PLACER L'imagE 
-		      int var1=50 ; 
-		      int var2=100; 
+		      Image img3 = ImageIO.read(new File("src/images/brique2.jpg"));
+		      Image img4 = ImageIO.read(new File("src/images/cadre5.jpg"));
+		      Image img5 = ImageIO.read(new File("src/images/mur.jpg"));
 		      
-	       for(int i=0 ;i < 10 ; i++){
-	    	   for(int j=0 ; j<10 ; j++){
-	    		   g2.setColor(Color.white);
+		      g2.drawImage(img4,24, 30, 29*14, 30*14, this);
+
+		    //  g2.setColor(Color.white);
+		     // g2.drawRect(34, 84, 30*11, 30*11);
+		      
+		      //TODO PLACER L'imagE 
+		      int var1=46 ; 
+		      int var2=61; 
+		     
+		      
+	       for(int i=0 ;i < 12 ; i++){
+	    	   
+	    	     
+	    	   for(int j=0 ; j<12 ; j++){
+	    
+	    		  if(i%2==0){ 
+	    			  if(j%2==0){
+	    				  if((j==2)&&(i==2)){
+	    					  g2.drawImage(img5, var1, var2, 30, 30, this);
+	    					  
+	    				  }else {
+	    				  
+	    				  g2.drawImage(img2, var1, var2, 30, 30, this);
+	    				  }
+	    		       
+	    			  }else {
+	    				  g2.drawImage(img3, var1, var2, 30, 30, this);
+		    		   
+		    		    // g2.drawRect(var1, var2, 30, 30);
+	    			  } 
+	    	   
+	    		  }else { 
+	    			  	if(j%2==0){
+	    				  
+	    			  		g2.drawImage(img3, var1, var2, 30, 30, this);
 	    		   
-	    		   g2.drawImage(img2, var1, var2, 30, 30, this);
-	    		   
-	    		   g2.drawRect(var1, var2, 30, 30);
-	    		   var1=var1+30; 
-	    		   var2=var2+30;
+	    			  		//  g2.drawRect(var1, var2, 30, 30);
+	    			  	}else {
+	    			  		g2.drawImage(img2, var1, var2, 30, 30, this);
+	    				  
+	    			  		// g2.drawRect(var1, var2, 30, 30);
+	    			  
+	    			  	}
+	    			  
+	    			  
+	    		  }
+	    		  
+	    		   var1=var1+30 ; 
 	    	   }
+	    	   var2=var2+30;
+	    	  var1=46 ; 
+	    	    
 	    	   
 	    	   
 	    	   
-	       }
+	       } 
 		      
 		      
 		      
