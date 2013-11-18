@@ -5,17 +5,17 @@
  * @version 2.6
  */
 public class InfosBrique {
-	protected int x;
-	protected int y;
-	protected boolean etat;
+	public int x;
+	public int y;
+	public boolean etat;
 	
 	public InfosBrique(int x, int y){
 		this.x=x;
 		this.y=y;
-		this.etat=true;
+		this.etat=false;
 	}
 	
 	public void affiche(){
-		System.out.println("x:"+x+"y:"+y);
+		System.out.print("x:"+x+"y:"+y+"\n");
 	}
 }

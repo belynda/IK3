@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Plateau {
 	public static Case[][] plateau = new Case[6][6];
-	public static ArrayList<InfosBlock> tableauDeBloc = new ArrayList<InfosBlock>();
+	public static ArrayList<InfosBlock> tableauDeBlock = new ArrayList<InfosBlock>();
 	/**
 	 * Constructeur qui prend les indices de chaque blocks positionner dans le plateau
 	 * dans un fichier texte 
@@ -58,25 +58,38 @@ public class Plateau {
 	 * @return void
 	 */
 	public void deplacerEnHaut(){
-		if(tableauDeBloc.isEmpty()){
+		if(tableauDeBlock.isEmpty()){
 			System.out.println("Eurreur de chargement du jeu! Pas de brique");
 			return ;
 		}else{
-			for(int i=0; i<tableauDeBloc.size();i++){	
-				if( bougerEnHaut(tableauDeBloc.get(i).haut) ){
-					for(int j=0; j<tableauDeBloc.get(i).haut.size();j++){					
-						tableauDeBloc.get(i).haut.get(j).y--;
-						tableauDeBloc.get(i).haut.get(j).etat=true;
-						int x=tableauDeBloc.get(i).bas.get(j).x;
-						int y=tableauDeBloc.get(i).bas.get(j).y;
-						plateau[x][y]=plateau[x][y-1];
-						plateau[x][y+1]=new Case(x,y+1);
+			for(int i=0; i<tableauDeBlock.size();i++){	
+				if( peuBougerEnHaut(tableauDeBlock.get(i)) ){
+					
+					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
+						int x=tableauDeBlock.get(i).get(j).x;
+						int y=tableauDeBlock.get(i).get(j).y;
+						plateau[x][y]=new Case(x,y);
+					 }
+					tableauDeBlock.get(i).decreX();
+					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
+						int x=tableauDeBlock.get(i).get(j).x;
+						int y=tableauDeBlock.get(i).get(j).y;						
+						plateau[x][y]=new Brique(x,y);
+					 }
+				}
+			}
+			for(int i=0; i<tableauDeBlock.size()-1;i++){
+				for(int j=i+1; j<tableauDeBlock.size();j++){	
+					
+					if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
+						fusionBlock(i,j);
+						i=0;
 					}
 				}
 			}
 		}
-		
-		
+	
+				
 	}// fin Deplacer en haut
 	/**
 	 * Deplace les blocs en bas
@@ -84,25 +97,37 @@ public class Plateau {
 	 * @return void
 	 */
 	public void deplacerEnBas(){
-		if(tableauDeBloc.isEmpty()){
+		if(tableauDeBlock.isEmpty()){
 			System.out.println("Eurreur de chargement du jeu! Pas de brique");
 			return ;
 		}else{
-			for(int i=0; i<tableauDeBloc.size();i++){	
-				if( bougerEnBas(tableauDeBloc.get(i).bas) ){
-					for(int j=0; j<tableauDeBloc.get(i).bas.size();j++){					
-						tableauDeBloc.get(i).bas.get(j).y++;
-						tableauDeBloc.get(i).bas.get(j).etat=true;
-						int x=tableauDeBloc.get(i).bas.get(j).x;
-						int y=tableauDeBloc.get(i).bas.get(j).y;
-						plateau[x][y]=plateau[x][y-1];
-						plateau[x][y-1]=new Case(x,y-1);
+			for(int i=0; i<tableauDeBlock.size();i++){	
+				if( peuBougerEnBas(tableauDeBlock.get(i)) ){
+					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
+						int x=tableauDeBlock.get(i).get(j).x;
+						int y=tableauDeBlock.get(i).get(j).y;
+						plateau[x][y]=new Case(x,y);
+					 }
+					tableauDeBlock.get(i).increX();
+					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
+						int x=tableauDeBlock.get(i).get(j).x;
+						int y=tableauDeBlock.get(i).get(j).y;						
+						plateau[x][y]=new Brique(x,y);
+					 }
+				}
+			}
+			for(int i=0; i<tableauDeBlock.size()-1;i++){
+				for(int j=i+1; j<tableauDeBlock.size();j++){	
+					
+					if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
+						fusionBlock(i,j);
+						i=0;
 					}
 				}
 			}
 		}
-		
-		
+	
+				
 	}// fin Deplacer a Bas
 	/**
 	 * Deplace les blocs a gauche
@@ -110,25 +135,38 @@ public class Plateau {
 	 * @return void
 	 */
 	public void deplacerAGauche(){
-		if(tableauDeBloc.isEmpty()){
+		if(tableauDeBlock.isEmpty()){
 			System.out.println("Eurreur de chargement du jeu! Pas de brique");
 			return ;
 		}else{
-			for(int i=0; i<tableauDeBloc.size();i++){	
-				if( bougerAGauche(tableauDeBloc.get(i).gauche) ){
-					for(int j=0; j<tableauDeBloc.get(i).gauche.size();j++){					
-						tableauDeBloc.get(i).gauche.get(j).x--;
-						tableauDeBloc.get(i).gauche.get(j).etat=true;
-						int x=tableauDeBloc.get(i).bas.get(j).x;
-						int y=tableauDeBloc.get(i).bas.get(j).y;
-						plateau[x][y]=plateau[x+1][y];
-						plateau[x+1][y]=new Case(x+1,y);
+			for(int i=0; i<tableauDeBlock.size();i++){	
+				if( peuBougerAGauche(tableauDeBlock.get(i)) ){
+					System.out.println("block "+i+" "+peuBougerAGauche(tableauDeBlock.get(i)));
+					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
+						int x=tableauDeBlock.get(i).get(j).x;
+						int y=tableauDeBlock.get(i).get(j).y;
+						plateau[x][y]=new Case(x,y);
+					 }
+					tableauDeBlock.get(i).increY();
+					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
+						int x=tableauDeBlock.get(i).get(j).x;
+						int y=tableauDeBlock.get(i).get(j).y;						
+						plateau[x][y]=new Brique(x,y);
+					 }
+				}
+			}
+			for(int i=0; i<tableauDeBlock.size()-1;i++){
+				for(int j=i+1; j<tableauDeBlock.size();j++){	
+					
+					if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
+						fusionBlock(i,j);
+						i=0;
 					}
 				}
 			}
 		}
-		
-		
+	
+				
 	}// fin Deplacer a Gauche
 	/**
 	 * Deplace les blocs a droite
@@ -136,25 +174,38 @@ public class Plateau {
 	 * @return void
 	 */
 	public void deplacerADroite(){
-		if(tableauDeBloc.isEmpty()){
+		if(tableauDeBlock.isEmpty()){
 			System.out.println("Eurreur de chargement du jeu! Pas de brique");
 			return ;
 		}else{
-			for(int i=0; i<tableauDeBloc.size();i++){	
-				if( bougerADroite(tableauDeBloc.get(i).droite) ){
-					for(int j=0; j<tableauDeBloc.get(i).droite.size();j++){					
-						tableauDeBloc.get(i).droite.get(j).x++;
-						tableauDeBloc.get(i).droite.get(j).etat=true;
-						int x=tableauDeBloc.get(i).bas.get(j).x;
-						int y=tableauDeBloc.get(i).bas.get(j).y;
-						plateau[x][y]=plateau[x-1][y];
-						plateau[x-1][y]=new Case(x-1,y);
+			for(int i=0; i<tableauDeBlock.size();i++){	
+				if( peuBougerADroite(tableauDeBlock.get(i)) ){
+					
+					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
+						int x=tableauDeBlock.get(i).get(j).x;
+						int y=tableauDeBlock.get(i).get(j).y;
+						plateau[x][y]=new Case(x,y);
+					 }
+					tableauDeBlock.get(i).decreY();
+					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
+						int x=tableauDeBlock.get(i).get(j).x;
+						int y=tableauDeBlock.get(i).get(j).y;						
+						plateau[x][y]=new Brique(x,y);
+					 }
+				}
+			}
+			for(int i=0; i<tableauDeBlock.size()-1;i++){
+				for(int j=i+1; j<tableauDeBlock.size();j++){	
+					
+					if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
+						fusionBlock(i,j);
+						i=0;
 					}
 				}
 			}
 		}
-		
-		
+	
+				
 	}// fin Deplacer a Droite
 	
 	/**
@@ -162,117 +213,92 @@ public class Plateau {
 	 * @param Liste des element permettant le deplacement en haut 
 	 * @return vrai(true) si le mouvement est posible le haut vers sinon faut
 	 */
-	public boolean bougerEnHaut(ArrayList<InfosBrique> tabHaut){
-		if(tabHaut.isEmpty()){
+	public boolean peuBougerEnHaut(InfosBlock block){
+		if(block.estVide()){
 			System.out.println("Eureur pas d'element en haut du bloc");
 			return false;
 		}else{
-			for(int i=0; i<tabHaut.size();i++){
-				int x=tabHaut.get(i).x;
-				int y=tabHaut.get(i).y;
-				tabHaut.get(i).etat=(plateau[x][y-1].getClasse().equals("Vide"));
-			}
-			
-			for(int i=0; i<tabHaut.size();i++){
-				if( ! tabHaut.get(i).etat){
-					return false;
+				for(int i=0;i<block.taille();i++){
+					int x=block.get(i).x;
+					int y=block.get(i).y;
+					block.get(i).etat=(plateau[x-1][y].getClasse().equals("Vide")|| plateau[x-1][y].getClasse().equals("Brique"));
 				}
-			}
-			return true;
-		}			
-		
-	}// fin de Bouger en haut
-	/**
-	 * Verifie si un bloc peut bouger en bas.
-	 * @param Liste des element permettant le deplacement en bas 
-	 * @return vrai(true) si le mouvement est posible le bas vers sinon faut
-	 */
-	public boolean bougerEnBas(ArrayList<InfosBrique> tabBas){
-		if(tabBas.isEmpty()){
+				for(int i=0;i<block.taille();i++){
+					if(!block.get(i).etat){
+						return false;
+					  }
+				}
+				return true;
+		}		
+	}//fin bouger en haut
+	
+	public boolean peuBougerEnBas(InfosBlock block){
+		if(block.estVide()){
 			System.out.println("Eureur pas d'element en haut du bloc");
 			return false;
 		}else{
-			for(int i=0; i<tabBas.size();i++){
-				int x=tabBas.get(i).x;
-				int y=tabBas.get(i).y;
-				tabBas.get(i).etat=(plateau[x][y+1].getClasse().equals("Vide"));
-			}
-			
-			for(int i=0; i<tabBas.size();i++){
-				if( ! tabBas.get(i).etat){
-					return false;
+				for(int i=0;i<block.taille();i++){
+					int x=block.get(i).x;
+					int y=block.get(i).y;
+					block.get(i).etat=(plateau[x+1][y].getClasse().equals("Vide")|| plateau[x+1][y].getClasse().equals("Brique"));			
 				}
-			}
-			return true;
-		}
-	}// fin de Bouger en bas
-	/**
-	 * Verifie si un bloc peut bouger a Gauche.
-	 * @param Liste des element permettant le deplacement en gauche 
-	 * @return vrai(true) si le mouvement est posible la gauche vers sinon faut
-	 */
-	public boolean bougerAGauche(ArrayList<InfosBrique> tabGauche){
-		if(tabGauche.isEmpty()){
-			System.out.println("Eureur pas d'element a gauche du bloc");
+				for(int i=0;i<block.taille();i++){
+					if(!block.get(i).etat){
+						return false;
+					  }				
+				}
+				return true;
+		}		
+	}//fin bouger en bas
+	
+	public boolean peuBougerAGauche(InfosBlock block){
+		if(block.estVide()){
+			System.out.println("Eureur pas d'element en haut du bloc");
 			return false;
 		}else{
-			for(int i=0; i<tabGauche.size();i++){
-				int x=tabGauche.get(i).x;
-				int y=tabGauche.get(i).y;
-				tabGauche.get(i).etat=(plateau[x-1][y].getClasse().equals("Vide"));
-			}
+				for(int i=0;i<block.taille();i++){
+					int x=block.get(i).x;
+					int y=block.get(i).y;
+					block.get(i).etat=(plateau[x][y+1].getClasse().equals("Vide")|| plateau[x][y+1].getClasse().equals("Brique"));
 			
-			for(int i=0; i<tabGauche.size();i++){
-				if( ! tabGauche.get(i).etat){
-					return false;
 				}
-			}
-			return true;
-		}			
+				for(int i=0;i<block.taille();i++){
+					if(!block.get(i).etat){
+						return false;
+					}
+				}
+				return true;
+		}		
+	}//fin bouger A gauche
 	
-	}// fin de Bouger a gauche
-	/**
-	 * Verifie si un bloc peut bouger a droite.
-	 * @param Liste des element permettant le deplacement a droite 
-	 * @return vrai(true) si le mouvement est posible la droite vers sinon faut
-	 */
-	public boolean bougerADroite(ArrayList<InfosBrique> tabDroite){
-		if(tabDroite.isEmpty()){
-			System.out.println("Eureur pas d'element en a droite du bloc");
+	public boolean peuBougerADroite(InfosBlock block){
+		if(block.estVide()){
+			System.out.println("Eureur pas d'element en haut du bloc");
 			return false;
 		}else{
-			for(int i=0; i<tabDroite.size();i++){
-				int x=tabDroite.get(i).x;
-				int y=tabDroite.get(i).y;
-				tabDroite.get(i).etat=(plateau[x+1][y].getClasse().equals("Vide"));
-			}
-			
-			for(int i=0; i<tabDroite.size();i++){
-				if( ! tabDroite.get(i).etat){
-					return false;
+				for(int i=0;i<block.taille();i++){
+					int x=block.get(i).x;
+					int y=block.get(i).y;
+					block.get(i).etat=(plateau[x][y-1].getClasse().equals("Vide")|| plateau[x][y-1].getClasse().equals("Brique"));					
 				}
-			}
-			return true;
-		}			
-		
-	}// fin de Bouger a droite
-	
-	/**
-	 * Fusion deux bloc en metant a jour les elements de directionnements haut bas gauche et droite.
+				for(int i=0;i<block.taille();i++){
+						if(!block.get(i).etat){
+							return false;
+						}
+				}
+				return true;
+		}		
+	}//fin bouger A Droite
+
+	/** Fusion deux bloc en metant a jour les elements de directionnements haut bas gauche et droite.
 	 * @param block1 represente le premier block 
 	 * @param block2 represente le deuxieme block 
 	 * @return void
 	 */
-	public void fusionBlock(InfosBlock block1,InfosBlock block2){
-		block1.haut=miseAJourElementEnHaut(block1.haut,block2.haut);
-		block1.bas=miseAJourElementEnBas(block1.bas,block2.bas);
-		block1.gauche=miseAJourElementAGauche(block1.gauche,block2.gauche);
-		block1.droite=miseAJourElementADroite(block1.droite,block2.droite);
-		
-		for(int i=0;i<block1.elementRestant.size();i++){
-			block1.elementRestant.add( block2.elementRestant.get(i) );
-			block2.elementRestant.remove(i);
-		}
+	public void fusionBlock(int i,int j){
+		 tableauDeBlock.get(i).ajouter(tableauDeBlock.get(j));;
+		 tableauDeBlock.remove(j);
+
 	}//fin fusion
 	/**
 	 * actualise les elements de haut lors du fusion de deux blocks.
@@ -280,119 +306,14 @@ public class Plateau {
 	 * @param block2 represente le haut deuxieme block 
 	 * @return les nouveaux elements du haut
 	 */
-	public ArrayList<InfosBrique> miseAJourElementEnHaut(ArrayList<InfosBrique> block1,ArrayList<InfosBrique> block2){
-		for(int i=0;i<block1.size();i++){
-			InfosBrique brique=block1.get(i);
-			int x=brique.x;
-			int y=brique.y--;
-			brique.etat=true;
-			if(plateau[x][y].getClasse().equals("Brique")){
-				block1.remove(i);
+	
+	public int indiceDuBloc(int x,int y){
+		for(int i=0;i<tableauDeBlock.size();i++){
+			if(tableauDeBlock.get(i).contient(x, y)){
+				return i;
 			}
 		}
-		for(int i=0;i<block2.size();i++){
-			InfosBrique brique=block2.get(i);
-			int x=brique.x;
-			int y=--brique.y;
-			brique.etat=true;
-			if(plateau[x][y].getClasse().equals("Brique")){
-				block2.remove(i);
-			}
-		}
-		for(int i=0;i<block1.size();i++){
-			 block2.add( block1.get(i) );
-		}
-		return block2;
-	}
-	/**
-	 * actualise les elements de bas lors du fusion de deux blocks.
-	 * @param block1 represente le bas du premier block 
-	 * @param block2 represente le bas deuxieme block 
-	 * @return les nouveaux elements du bas
-	 */
-	public ArrayList<InfosBrique> miseAJourElementEnBas(ArrayList<InfosBrique> block1,ArrayList<InfosBrique> block2){
-		for(int i=0;i<block1.size();i++){
-			InfosBrique brique=block1.get(i);
-			int x=brique.x;
-			int y=++brique.y;
-			brique.etat=true;
-			if(plateau[x][y].getClasse().equals("Brique")){
-				block1.remove(i);
-			}
-		}
-		for(int i=0;i<block2.size();i++){
-			InfosBrique brique=block2.get(i);
-			int x=brique.x;
-			int y=brique.y--;
-			brique.etat=true;
-			if(plateau[x][y].getClasse().equals("Brique")){
-				block2.remove(i);
-			}
-		}
-		for(int i=0;i<block1.size();i++){
-			 block2.add( block1.get(i) );
-		}
-		return block2;
-	}
-	/**
-	 * actualise les elements de Gauche lors du fusion de deux blocks.
-	 * @param block1 represente la gauche du premier block 
-	 * @param block2 represente la gauche deuxieme block 
-	 * @return les nouveaux elements de gauche
-	 */
-	public ArrayList<InfosBrique> miseAJourElementAGauche(ArrayList<InfosBrique> block1,ArrayList<InfosBrique> block2){
-		for(int i=0;i<block1.size();i++){
-			InfosBrique brique=block1.get(i);
-			int x=--brique.x;
-			int y=brique.y;
-			brique.etat=true;
-			if(plateau[x][y].getClasse().equals("Brique")){
-				block1.remove(i);
-			}
-		}
-		for(int i=0;i<block2.size();i++){
-			InfosBrique brique=block2.get(i);
-			int x=brique.x;
-			int y=brique.y--;
-			brique.etat=true;
-			if(plateau[x][y].getClasse().equals("Brique")){
-				block2.remove(i);
-			}
-		}
-		for(int i=0;i<block1.size();i++){
-			 block2.add( block1.get(i) );
-		}
-		return block2;
-	}
-	/**
-	 * actualise les elements de droitet lors du fusion de deux blocks.
-	 * @param block1 represente la droite du premier block 
-	 * @param block2 represente la droite deuxieme block 
-	 * @return les nouveaux elements de droite
-	 */
-	public ArrayList<InfosBrique> miseAJourElementADroite(ArrayList<InfosBrique> block1,ArrayList<InfosBrique> block2){
-		for(int i=0;i<block1.size();i++){
-			InfosBrique brique=block1.get(i);
-			int x=brique.x;
-			int y=brique.y--;
-			brique.etat=true;
-			if(plateau[x][y].getClasse().equals("Brique")){
-				block1.remove(i);
-			}
-		}
-		for(int i=0;i<block2.size();i++){
-			InfosBrique brique=block2.get(i);
-			int x=++brique.x;
-			int y=brique.y;
-			brique.etat=true;
-			if(plateau[x][y].getClasse().equals("Brique")){
-				block2.remove(i);
-			}
-		}
-		for(int i=0;i<block1.size();i++){
-			 block2.add( block1.get(i) );
-		}
-		return block2;
+		return -1;
 	}
 	/**
 	 * verifie si la partie est fini
@@ -400,7 +321,7 @@ public class Plateau {
 	 * @return vrai si il reste q un seule bloc
 	 */
 	public boolean partiEstFini(){
-		return tableauDeBloc.size()==1;
+		return tableauDeBlock.size()==1;
 	}
 	/**
 	 * affiche juste le plateau de jeu
@@ -425,16 +346,18 @@ public class Plateau {
 	}
 	
 	public static void afficheTableauDeBloc(){
-		for(InfosBlock ib: tableauDeBloc){
-			afficheBloc(ib.haut);
-			afficheBloc(ib.bas);
-			afficheBloc(ib.gauche);
-			afficheBloc(ib.droite);
+		for(InfosBlock ib: tableauDeBlock){
+			ib.affiche(); 
 		}
 	}
-	public static void afficheBloc(ArrayList<InfosBrique> b){
-		for(InfosBrique ib: b){
-			ib.affiche();
-		}
-	}
+	
+	
 }//fin classe
+
+
+
+
+
+
+
+

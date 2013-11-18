@@ -18,6 +18,10 @@ public class Brique extends Case{
 		this.etat=true;
 		this.couleur=coul;
 	}
+	public Brique(int x,int y){
+		super(x,y);
+		this.etat=true;
+	}
 	/**
 	 * donne la classe a la qu elle apprtient l element instancier
 	 * @param aucun
