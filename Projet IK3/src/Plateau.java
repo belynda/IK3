@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Plateau {
-	public static Case[][] plateau = new Case[6][6];
+	public static Case[][] plateau = new Case[10][10];
 	public static ArrayList<InfosBlock> tableauDeBlock = new ArrayList<InfosBlock>();
 	/**
 	 * Constructeur qui prend les indices de chaque blocks positionner dans le plateau
@@ -15,30 +15,26 @@ public class Plateau {
 	 * @param aucun
 	 * @return void
 	 */
-	/*public Plateau(String file){
+	public Plateau(String file){
 		DataInputStream dis;
 			try{
 				dis = new DataInputStream(new BufferedInputStream(new FileInputStream(new File(file))));
 				try{
-					while(true){
+					for(int i=0;i<100;i++){
 						int x=dis.readInt();
 						int y=dis.readInt();
-						String classe=dis.readUTF();
-						if(classe.charAt(0)=='V'){
+						char c=dis.readChar();
+						if(c=='V'){
 							plateau[x][y]=new Case(x,y);
-						}else{ if(classe.charAt(0)=='M'){
-								plateau[x][y]=new Mur(x,y);
-							}else{
-								String coul=dis.readUTF();
-								plateau[x][y]=new Brique(x,y,coul);
-								InfosBrique br= new InfosBrique(x,y);
-								ArrayList<InfosBrique> ab= new ArrayList<InfosBrique>();
-								ab.add(br);
-								InfosBlock bl= new InfosBlock(ab);
-								tableauDeBloc.add(bl);
-							}			
-						}
+						}else{ 
+								if(c=='M'){
+									plateau[x][y]=new Mur(x,y);
+								}else{
+									plateau[x][y]=new Brique(x,y);
+									}			
+							}
 					} 
+					miseAJourTableauDeBlock();
 					}catch (EOFException e) {
 					// c'est fini !
 						System.out.println("fichier chargée avec succes");
@@ -48,9 +44,11 @@ public class Plateau {
 			}catch (FileNotFoundException e) {
 				System.out.println("fichier non trouver");
 			} 
-			catch (IOException e) {  }
+			catch (IOException e) {
+				System.out.println("fichier chargée avec succes");
+			}
 			
-	}*/
+	}
 	
 	/**
 	 * Deplace les blocs en haut
@@ -78,15 +76,7 @@ public class Plateau {
 					 }
 				}
 			}
-			for(int i=0; i<tableauDeBlock.size()-1;i++){
-				for(int j=i+1; j<tableauDeBlock.size();j++){	
-					
-					if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
-						fusionBlock(i,j);
-						i=0;
-					}
-				}
-			}
+			miseAJourBlock();
 		}
 	
 				
@@ -116,15 +106,7 @@ public class Plateau {
 					 }
 				}
 			}
-			for(int i=0; i<tableauDeBlock.size()-1;i++){
-				for(int j=i+1; j<tableauDeBlock.size();j++){	
-					
-					if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
-						fusionBlock(i,j);
-						i=0;
-					}
-				}
-			}
+			miseAJourBlock();
 		}
 	
 				
@@ -155,15 +137,7 @@ public class Plateau {
 					 }
 				}
 			}
-			for(int i=0; i<tableauDeBlock.size()-1;i++){
-				for(int j=i+1; j<tableauDeBlock.size();j++){	
-					
-					if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
-						fusionBlock(i,j);
-						i=0;
-					}
-				}
-			}
+			miseAJourBlock();
 		}
 	
 				
@@ -194,15 +168,7 @@ public class Plateau {
 					 }
 				}
 			}
-			for(int i=0; i<tableauDeBlock.size()-1;i++){
-				for(int j=i+1; j<tableauDeBlock.size();j++){	
-					
-					if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
-						fusionBlock(i,j);
-						i=0;
-					}
-				}
-			}
+			miseAJourBlock();
 		}
 	
 				
@@ -350,7 +316,28 @@ public class Plateau {
 			ib.affiche(); 
 		}
 	}
-	
+
+	public  void miseAJourTableauDeBlock(){
+		for(int i=0;i<plateau.length;i++){
+			for(int j=0;j<plateau.length;j++){
+				if(plateau[i][j].getClasse().equals("Brique")){
+					tableauDeBlock.add(new InfosBlock(i,j));
+				}
+			}
+		}
+		miseAJourBlock();
+	}
+
+	public void miseAJourBlock(){
+		for(int i=0; i<tableauDeBlock.size()-1;i++){
+			for(int j=i+1; j<tableauDeBlock.size();j++){					
+				if( tableauDeBlock.get(i).adjacent(tableauDeBlock.get(j).block) ){
+					fusionBlock(i,j);
+					i=0;
+				}
+			}
+		}
+	}// miseAjour A Block
 	
 }//fin classe
 

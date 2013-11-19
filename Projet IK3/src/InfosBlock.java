@@ -6,13 +6,16 @@
 import java.util.ArrayList;
 
 public class InfosBlock {
-	public ArrayList<InfosBrique> block;
+	public ArrayList<InfosBrique> block=new ArrayList<InfosBrique>();
 	
 	public InfosBlock(ArrayList<InfosBrique> br){
 		this.block=br;
 	}
 	public InfosBlock(){
 		this.block=new  ArrayList<InfosBrique>();
+	}
+	public InfosBlock(int x, int y){
+		this.block.add(new InfosBrique(x,y));
 	}
 	
 	public void affiche(){
