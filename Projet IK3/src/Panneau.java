@@ -12,7 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class Panneau extends JPanel implements KeyListener, MouseListener {
+public class Panneau extends JPanel implements KeyListener {
 	private int posX = 54 + 28;
 	private int posY = 51 + 28;
 	Image img_fond;
@@ -20,10 +20,12 @@ public class Panneau extends JPanel implements KeyListener, MouseListener {
 	Image img_sol2;
 	Image img_mur;
 	Plateau jeu;
+	
+	int i = 0, j = 0;
 
 	public Panneau() {
-		this.setSize(800,500);
-		
+		this.setSize(800, 500);
+
 		// Ouverture des images
 		try {
 			img_fond = ImageIO.read(new File("src/images/tou4.jpg"));
@@ -39,12 +41,11 @@ public class Panneau extends JPanel implements KeyListener, MouseListener {
 
 		// Liaison du KeyListener avec le panneau
 		this.addKeyListener(this);
-		//Liaison avec le MouseListener
-		this.addMouseListener(this);
+		this.setFocusable(true);
 	}
 
 	public void paintComponent(Graphics g) {
-		//System.out.println("Debut de l'affichage du panneau !");
+		// System.out.println("Debut de l'affichage du panneau !");
 		Graphics2D g2 = (Graphics2D) g;
 
 		// Pour une image de fond
@@ -163,45 +164,49 @@ public class Panneau extends JPanel implements KeyListener, MouseListener {
 
 		// TODO Vous verrez cette phrase chaque fois que la méthode sera
 		// invoquée
-		//System.out.println("Fin de l'affichage du panneau !");
+		// System.out.println("Fin de l'affichage du panneau !");
 
 	}
 
 	// Fonctions liées au clavier
 	public void keyPressed(KeyEvent event) {
-		System.out.println("Code touche pressée : " + event.getKeyCode()
-				+ " - caractère touche pressée : " + event.getKeyChar());
+		System.out.println("Code touche pressée : " + event.getKeyCode() + " - caractère touche pressée : " + event.getKeyChar());
+		System.out.println("test");
+		if (!jeu.partiEstFini()) {
+			System.out.println("direction");
+
+			if (event.getKeyCode() == 38) {
+				jeu.deplacerEnHaut();
+
+			} else {
+				if (event.getKeyCode() == 40) {
+					jeu.deplacerEnBas();
+
+				} else {
+					if (event.getKeyCode() == 37) {
+						jeu.deplacerAGauche();
+					} else {
+						if (event.getKeyCode() == 39) {
+							jeu.deplacerADroite();
+						}
+					}
+				}
+			}
+			jeu.affichePlateau();
+			i++;
+		} else {
+			if (j == 0) {
+				jeu.afficheTableauDeBloc();
+				System.out.println("fin de parti . Nombre de coup " + i);
+				j++;
+			}
+		}
+		this.repaint();
 	}
 
 	public void keyReleased(KeyEvent event) {
-		System.out.println("Code touche relâchée : " + event.getKeyCode()
-				+ " - caractère touche relâchée : " + event.getKeyChar());
 	}
 
 	public void keyTyped(KeyEvent event) {
-		System.out.println("Code touche tapée : " + event.getKeyCode()
-				+ " - caractère touche tapée : " + event.getKeyChar());
-	}
-
-	// Gestion de la souris
-
-	public void mousePressed(MouseEvent e) {
-		System.out.println("Souris pressée");
-	}
-
-	public void mouseReleased(MouseEvent e) {
-		System.out.println("Souris relachée");
-	}
-
-	public void mouseEntered(MouseEvent e) {
-		System.out.println("La souris entre dans la zone de dessin");
-	}
-
-	public void mouseExited(MouseEvent e) {
-		System.out.println("La souris sort de la zone de dessin");
-	}
-
-	public void mouseClicked(MouseEvent e) {
-		System.out.println("Clic de souris");
 	}
 }

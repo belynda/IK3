@@ -30,49 +30,4 @@ public class Fenetre extends JFrame {
 		this.getContentPane().add(pan);
 		this.setVisible(true);
 	}
-
-	/*
-	class testclavier implements KeyListener {
-		public void keyPressed(KeyEvent event) {
-			System.out.println("test");
-			if (!jeu.partiEstFini()) {
-				System.out.println("direction");
-
-				if (event.getKeyCode() == 38) {
-					jeu.deplacerEnHaut();
-
-				} else {
-					if (event.getKeyCode() == 40) {
-						jeu.deplacerEnBas();
-
-					} else {
-						if (event.getKeyCode() == 39) {
-							jeu.deplacerAGauche();
-						} else {
-							if (event.getKeyCode() == 37) {
-								jeu.deplacerADroite();
-							}
-						}
-					}
-				}
-				jeu.affichePlateau();
-				i++;
-			} else {
-				if (j == 0) {
-					jeu.afficheTableauDeBloc();
-					System.out.println("fin de parti . Nombre de coup " + i);
-					j++;
-				}
-			}
-
-		}
-
-		public void keyReleased(KeyEvent event) {
-		}
-
-		public void keyTyped(KeyEvent event) {
-		}
-
-	}
-	*/
 }
