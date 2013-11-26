@@ -1,15 +1,19 @@
 import java.awt.Color; 
+import java.awt.event.*; 
+
+import javax.swing.JTextField;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
 
 
+
 public class Fenetre extends JFrame {
-	
+	//private JTextField jtf; 
 	
 //TODO constructeur  de la fenetre 
-	  Fenetre(){
+	public   Fenetre(){
 		
 		//TODO modifier le titre de la fenetre 
 		setTitle("DenkiBlocks"); 
@@ -36,29 +40,74 @@ public class Fenetre extends JFrame {
 		// TODO definition de la couleur du fond 
        // pan.setBackground(Color.BLUE);
 		
-		//TODO on previent notre JFrame que notre JPanel sera son content pane 
-		this.setContentPane(pan); 
+
+		  //TODO on previent notre JFrame que notre JPanel sera son content pane 
+			this.setContentPane(pan); 
+				
+		//this.setContentPane( new Panneau2());
 		
+
+		    // this.setContentPane(pan);
 		this.setContentPane(new Panneau());
-		
-		
 		this.setVisible(true);
 		
 		
+		pan.addKeyListener(new testclavier());
 		 
 	  }
+	
+	
+	
+	
+	
+	class testclavier implements KeyListener{
+		    public void keyPressed(KeyEvent event) {
+		      
+		      if(!jeu.partiEstFini()){
+		          System.out.println("direction");
+		          
+		        if(event.getKeyCode()==38){
+		          jeu.deplacerEnHaut();
+		          
+		        }else{
+		          if(event.getKeyCode()==40){
+		            jeu.deplacerEnBas();
+		            
+		          }else{
+		           if(event.getKeyCode()==39){
+		             jeu.deplacerAGauche();
+		           }else{
+		             if(event.getKeyCode()==37){
+		             jeu.deplacerADroite();
+		            }
+		         }
+		         }
+		       }
+		         jeu.affichePlateau();
+		         i++;
+		       }else{
+		         if(j==0){
+		           jeu.afficheTableauDeBloc();
+		           System.out.println("fin de parti . Nombre de coup "+i);
+		           j++;
+		         }
+		       }
+		      
+		     }
 		 
-	      
+		     public void keyReleased(KeyEvent event) {}
 		 
-		 
+		     public void keyTyped(KeyEvent event) {}     
+		     
+		    
+		   }   
+		   static Plateau jeu= new Plateau("fichier/file.txt");
+		   int i=0,j=0;
 		
 		
 		
 		
-		
-		
-		
-		}
+}
 	
 
 
