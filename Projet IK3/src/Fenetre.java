@@ -6,9 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Fenetre extends JFrame {
-	static Plateau jeu = new Plateau("fichier/file.txt");
+	//static Plateau jeu = new Plateau("file.txt");
 	Panneau pan = new Panneau();
-	int i = 0, j = 0;
 
 	// TODO constructeur de la fenetre
 	public Fenetre() {
@@ -32,6 +31,7 @@ public class Fenetre extends JFrame {
 		this.setVisible(true);
 	}
 
+	/*
 	class testclavier implements KeyListener {
 		public void keyPressed(KeyEvent event) {
 			System.out.println("test");
@@ -74,4 +74,5 @@ public class Fenetre extends JFrame {
 		}
 
 	}
+	*/
 }

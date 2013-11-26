@@ -4,13 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class Panneau extends JPanel {
+public class Panneau extends JPanel implements KeyListener, MouseListener {
 	private int posX = 54 + 28;
 	private int posY = 51 + 28;
 	Image img_fond;
@@ -20,6 +22,8 @@ public class Panneau extends JPanel {
 	Plateau jeu;
 
 	public Panneau() {
+		this.setSize(800,500);
+		
 		// Ouverture des images
 		try {
 			img_fond = ImageIO.read(new File("src/images/tou4.jpg"));
@@ -30,15 +34,17 @@ public class Panneau extends JPanel {
 			e.printStackTrace();
 		}
 
-		//Ouverture du plateau
+		// Ouverture du plateau
 		jeu = new Plateau("src/file.txt");
-		
+
 		// Liaison du KeyListener avec le panneau
-		this.addKeyListener(new ClavierListener());
+		this.addKeyListener(this);
+		//Liaison avec le MouseListener
+		this.addMouseListener(this);
 	}
 
 	public void paintComponent(Graphics g) {
-		System.out.println("Debut de l'affichage du panneau !");
+		//System.out.println("Debut de l'affichage du panneau !");
 		Graphics2D g2 = (Graphics2D) g;
 
 		// Pour une image de fond
@@ -82,8 +88,6 @@ public class Panneau extends JPanel {
 		// tab = Jeu.jeu.plateau[11][13];
 		// Plateau tab = new Plateau();
 		// tab = Jeu.jeu ;
-
-		
 
 		int largeur = 32;
 		int longeur = 32;
@@ -159,25 +163,45 @@ public class Panneau extends JPanel {
 
 		// TODO Vous verrez cette phrase chaque fois que la méthode sera
 		// invoquée
-		System.out.println("Fin de l'affichage du panneau !");
+		//System.out.println("Fin de l'affichage du panneau !");
 
 	}
 
-	class ClavierListener implements KeyListener {
+	// Fonctions liées au clavier
+	public void keyPressed(KeyEvent event) {
+		System.out.println("Code touche pressée : " + event.getKeyCode()
+				+ " - caractère touche pressée : " + event.getKeyChar());
+	}
 
-		public void keyPressed(KeyEvent event) {
-			System.out.println("Code touche pressée : " + event.getKeyCode()
-					+ " - caractère touche pressée : " + event.getKeyChar());
-		}
+	public void keyReleased(KeyEvent event) {
+		System.out.println("Code touche relâchée : " + event.getKeyCode()
+				+ " - caractère touche relâchée : " + event.getKeyChar());
+	}
 
-		public void keyReleased(KeyEvent event) {
-			System.out.println("Code touche relâchée : " + event.getKeyCode()
-					+ " - caractère touche relâchée : " + event.getKeyChar());
-		}
+	public void keyTyped(KeyEvent event) {
+		System.out.println("Code touche tapée : " + event.getKeyCode()
+				+ " - caractère touche tapée : " + event.getKeyChar());
+	}
 
-		public void keyTyped(KeyEvent event) {
-			System.out.println("Code touche tapée : " + event.getKeyCode()
-					+ " - caractère touche tapée : " + event.getKeyChar());
-		}
+	// Gestion de la souris
+
+	public void mousePressed(MouseEvent e) {
+		System.out.println("Souris pressée");
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		System.out.println("Souris relachée");
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		System.out.println("La souris entre dans la zone de dessin");
+	}
+
+	public void mouseExited(MouseEvent e) {
+		System.out.println("La souris sort de la zone de dessin");
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("Clic de souris");
 	}
 }

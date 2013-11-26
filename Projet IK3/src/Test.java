@@ -8,8 +8,8 @@ public class Test {
 		Fenetre fen = new Fenetre();
 		// Plateau jeu= new Plateau("src/file.txt");
 
-		System.out.println("taile:" + jeu.tableauDeBlock.size());
-		jeu.affichePlateau();
+		//System.out.println("taile:" + jeu.tableauDeBlock.size());
+		//jeu.affichePlateau();
 
 	}
 }
