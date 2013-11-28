@@ -19,6 +19,8 @@ public class Panneau extends JPanel implements KeyListener {
 	Image img_sol1;
 	Image img_sol2;
 	Image img_mur;
+	Image img_etoile;
+	
 	Plateau jeu;
 	
 	int i = 0, j = 0;
@@ -32,6 +34,7 @@ public class Panneau extends JPanel implements KeyListener {
 			img_sol1 = ImageIO.read(new File("src/images/plan.jpg"));
 			img_sol2 = ImageIO.read(new File("src/images/plan3.jpg"));
 			img_mur = ImageIO.read(new File("src/images/brique2.jpg"));
+			img_etoile = ImageIO.read(new File("src/images/etoile.gif"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,7 +92,10 @@ public class Panneau extends JPanel implements KeyListener {
 		// tab = Jeu.jeu.plateau[11][13];
 		// Plateau tab = new Plateau();
 		// tab = Jeu.jeu ;
-
+		if(jeu.partiEstFini()){
+			g2.drawImage(img_etoile, 700,700 ,
+					30, 30, this);
+		}
 		int largeur = 32;
 		int longeur = 32;
 
@@ -147,16 +153,18 @@ public class Panneau extends JPanel implements KeyListener {
 							g.fillRoundRect(posX + i * 30, posY + (j - 1) * 30,
 									largeur, longeur + 30, 13, 13);
 
-						}
-					} else {
-						g.setColor(new Color(100, 100, 100));
-						g.fillRoundRect(posX + i * 30, posY + (j) * 30,
-								largeur, longeur, 13, 13);
+						}else {
+							g.setColor(new Color(100, 100, 100));
+							g.fillRoundRect(posX + i * 30, posY + j * 30,
+									largeur, longeur, 13, 13);
 
+					} 
 					}
 				}
 
 			}
+			
+			
 
 		}
 
@@ -175,18 +183,18 @@ public class Panneau extends JPanel implements KeyListener {
 		if (!jeu.partiEstFini()) {
 			System.out.println("direction");
 
-			if (event.getKeyCode() == 38) {
+			if (event.getKeyCode() == 37) {
 				jeu.deplacerEnHaut();
 
 			} else {
-				if (event.getKeyCode() == 40) {
+				if (event.getKeyCode() == 39) {
 					jeu.deplacerEnBas();
 
 				} else {
-					if (event.getKeyCode() == 37) {
+					if (event.getKeyCode() == 40) {
 						jeu.deplacerAGauche();
 					} else {
-						if (event.getKeyCode() == 39) {
+						if (event.getKeyCode() == 38) {
 							jeu.deplacerADroite();
 						}
 					}
@@ -198,6 +206,7 @@ public class Panneau extends JPanel implements KeyListener {
 			if (j == 0) {
 				jeu.afficheTableauDeBloc();
 				System.out.println("fin de parti . Nombre de coup " + i);
+			
 				j++;
 			}
 		}
