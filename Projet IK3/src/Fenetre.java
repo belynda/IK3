@@ -1,11 +1,16 @@
 import java.awt.Color;
 import java.awt.event.*;
+import java.awt.Dimension; 
+
 
 import javax.swing.JTextField;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Fenetre extends JFrame {
+	
+	
+	 
 	//static Plateau jeu = new Plateau("file.txt");
 	Panneau pan = new Panneau();
 
@@ -27,7 +32,16 @@ public class Fenetre extends JFrame {
 		this.setResizable(false);
 
 		//On ajoute le panneau dans le contenu de la fenetre
+		
+		//public static void ChoixPanneau(Panneau pan){
+			// Panneau pan = new Panneau(); 
 		this.getContentPane().add(pan);
+		
+		// JPanel policePanel=new Marqee("Bienvenu sur java.mesexemples.com");
+		// this.add(policePanel);
+		//	}
 		this.setVisible(true);
+		
 	}
+	  
 }

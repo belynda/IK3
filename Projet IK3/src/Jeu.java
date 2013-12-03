@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 public class Jeu {
-	static Plateau jeu= new Plateau("fichier/file.txt");
+	static Plateau jeu= new Plateau("src/file.txt");
 	
 	public static  void remplissage(){
 		for(int i=0;i<10;i++){

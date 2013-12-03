@@ -1,3 +1,5 @@
+import javax.swing.JPanel;
+
 
 public class Test {
 
@@ -6,10 +8,11 @@ public class Test {
 
 	public static void main(String[] args) {
 		Fenetre fen = new Fenetre();
-		// Plateau jeu= new Plateau("src/file.txt");
-
-		//System.out.println("taile:" + jeu.tableauDeBlock.size());
-		//jeu.affichePlateau();
+		
+		 // Fonction principale
+    	
+            
+	
 
 	}
 }
