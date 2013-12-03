@@ -25,7 +25,7 @@ public class Panneau extends JPanel implements KeyListener  {
 	Image img_mur;
 	Image img_etoile;
 	
-	 
+	public Fenetre fen; 
 	
 	
 	Plateau jeu;
@@ -33,7 +33,9 @@ public class Panneau extends JPanel implements KeyListener  {
 	int i = 0, j = 0;
 
 	
-	public Panneau() {
+	public Panneau(Fenetre fen) {
+		
+		this.fen = fen;
 		this.setSize(800, 500);
 
 		// Ouverture des images
@@ -96,20 +98,50 @@ public class Panneau extends JPanel implements KeyListener  {
 			ecartVertical = ecartVertical + 30;
 			ecartHorizontal = 54;
 		}
+		
+		
+		//dessin du petit sol 
+		int ecartHorizontal2 = 570;
+		int ecartVertical2 = 50;
+
+		// Dessin du sol
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (i % 2 == 0) {// On dessine les cases paires
+					if (j % 2 == 0) {
+						g2.drawImage(img_sol1, ecartHorizontal2, ecartVertical2,
+								30, 30, this);
+					} else {
+						g2.drawImage(img_sol2, ecartHorizontal2, ecartVertical2,
+								30, 30, this);
+						// g2.drawRect(var1, var2, 30, 30);
+					}
+				} else { // On dessine les cases impaires
+					if (j % 2 == 0) {
+						g2.drawImage(img_sol2, ecartHorizontal2, ecartVertical2,
+								30, 30, this);
+						// g2.drawRect(var1, var2, 30, 30);
+					} else {
+						g2.drawImage(img_sol1, ecartHorizontal2, ecartVertical2,
+								30, 30, this);
+						// g2.drawRect(var1, var2, 30, 30);
+					}
+				}
+				ecartHorizontal2 = ecartHorizontal2 + 30;
+			}
+			ecartVertical2 = ecartVertical2 + 30;
+			ecartHorizontal2 = 570;
+		}
 		// la je vais recuperer la tableau d'alpha et afficher avec une
 		// boucle
 
-		// Case[][] tab = new Case[11][13] ;
-		// tab = Jeu.jeu.plateau[11][13];
-		// Plateau tab = new Plateau();
-		// tab = Jeu.jeu ;
 		
 		int largeur = 32;
 		int longeur = 32;
 		
 
 		for (int i = 0; i < 10; i++) {
-			int k = i + i;
+		
 
 			for (int j = 0; j < 10; j++) {
 
@@ -223,6 +255,7 @@ public class Panneau extends JPanel implements KeyListener  {
 				}
 			}
 			jeu.affichePlateau();
+			jeu.afficheTableauDeBloc();
 			i++;
 		} else {
 			if (j == 0) {
