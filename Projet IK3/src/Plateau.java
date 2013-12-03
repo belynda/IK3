@@ -5,10 +5,12 @@
  */
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Plateau {
-	public static Case[][] plateau = new Case[10][10];
-	public static ArrayList<InfosBlock> tableauDeBlock = new ArrayList<InfosBlock>();
+	protected int nbreDeCoup=0;
+	public  Case[][] plateau = new Case[10][10];
+	public  ArrayList<InfosBlock> tableauDeBlock = new ArrayList<InfosBlock>();
 	/**
 	 * Constructeur qui prend les indices de chaque blocks positionner dans le plateau
 	 * dans un fichier texte 
@@ -20,7 +22,7 @@ public class Plateau {
 			try{
 				dis = new DataInputStream(new BufferedInputStream(new FileInputStream(new File(file))));
 				try{
-					for(int i=0;i<100;i++){
+					for(int i=0;i<(10*10);i++){
 						int x=dis.readInt();
 						int y=dis.readInt();
 						char c=dis.readChar();
@@ -76,7 +78,8 @@ public class Plateau {
 					 }
 				}
 			}
-			miseAJourBlock();
+			nbreDeCoup++;
+			this.miseAJourBlock();
 		}
 	
 				
@@ -106,7 +109,8 @@ public class Plateau {
 					 }
 				}
 			}
-			miseAJourBlock();
+			nbreDeCoup++;
+			this.miseAJourBlock();
 		}
 	
 				
@@ -123,7 +127,6 @@ public class Plateau {
 		}else{
 			for(int i=0; i<tableauDeBlock.size();i++){	
 				if( peuBougerAGauche(tableauDeBlock.get(i)) ){
-					System.out.println("block "+i+" "+peuBougerAGauche(tableauDeBlock.get(i)));
 					for(int j=0;j<tableauDeBlock.get(i).taille();j++){
 						int x=tableauDeBlock.get(i).get(j).x;
 						int y=tableauDeBlock.get(i).get(j).y;
@@ -135,9 +138,11 @@ public class Plateau {
 						int y=tableauDeBlock.get(i).get(j).y;						
 						plateau[x][y]=new Brique(x,y);
 					 }
+					
 				}
 			}
-			miseAJourBlock();
+			nbreDeCoup++;
+			this.miseAJourBlock();
 		}
 	
 				
@@ -168,6 +173,7 @@ public class Plateau {
 					 }
 				}
 			}
+			nbreDeCoup++;
 			miseAJourBlock();
 		}
 	
@@ -294,9 +300,9 @@ public class Plateau {
 	 * @param aucun
 	 * @return void
 	 */
-	public static void affichePlateau(){
-		for(Case[] c:plateau){
-			for(Case v: c){
+	public  void affichePlateau(){
+		for(Case[] l:plateau){
+			for(Case v: l){
 				if(v.getClasse().equalsIgnoreCase("vide")){
 					System.out.print("  ");
 				}else{
@@ -311,7 +317,7 @@ public class Plateau {
 		}
 	}
 	
-	public static void afficheTableauDeBloc(){
+	public  void afficheTableauDeBloc(){
 		for(InfosBlock ib: tableauDeBlock){
 			ib.affiche(); 
 		}
@@ -319,7 +325,7 @@ public class Plateau {
 
 	public  void miseAJourTableauDeBlock(){
 		for(int i=0;i<plateau.length;i++){
-			for(int j=0;j<plateau.length;j++){
+			for(int j=0;j<plateau[i].length;j++){
 				if(plateau[i][j].getClasse().equals("Brique")){
 					tableauDeBlock.add(new InfosBlock(i,j));
 				}
@@ -339,6 +345,54 @@ public class Plateau {
 		}
 	}// miseAjour A Block
 	
+	public void sauvegardePartie(){
+		 DataInputStream dis;
+		    DataOutputStream dos;
+		    try {
+		      dos = new DataOutputStream(
+		              new BufferedOutputStream(
+		                new FileOutputStream(
+		                  new File("fichier/file1.txt"))));
+		    
+		      for(int i=0;i<11;i++){
+					for(int j=0;j<13;j++){
+						dos.writeInt(i);
+					    dos.writeInt(j);
+						if(i==0 || j==0 ||i==11 || j==13){						      
+						      dos.writeChar('M');					     					      
+						}else{
+							char c;
+							 c=plateau[i][j].getClasse().toUpperCase().charAt(0);
+							dos.writeChar(c);
+							
+						}
+					}
+		      }
+		      dos.close();
+		  
+		        	
+		      //On récupère maintenant les données !
+		      dis = new DataInputStream(
+		              new BufferedInputStream(
+		                new FileInputStream(
+		                  new File("fichier/file.txt"))));
+		     for(int i=0;i<100;i++){      
+			      System.out.println(dis.readInt());
+			      System.out.println(dis.readInt());
+			      System.out.println(dis.readChar());
+		     }
+		        	
+		    } catch (FileNotFoundException e) {
+		    	e.printStackTrace();
+		    } catch (IOException e) {
+		    	System.out.print("Fin de fichier ");
+		    }     	
+		
+	}// fin sauvegarde
+	
+	public int nombreDeCoup(){
+		return nbreDeCoup;
+	}
 }//fin classe
 
 
