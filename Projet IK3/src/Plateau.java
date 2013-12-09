@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Plateau {
 	protected int nbreDeCoup=0;
+	public Case[][] chalenge= new Case [5][6];
 	public InfosBlock masterChalenge = new InfosBlock();
 	public  Case[][] plateau = new Case[10][10];
 	public  ArrayList<InfosBlock> tableauDeBlock = new ArrayList<InfosBlock>();
@@ -43,6 +44,11 @@ public class Plateau {
 					this.masterChalenge.ajouter(2,0);
 					this.masterChalenge.ajouter(2,1);
 					this.masterChalenge.ajouter(2,2);
+					this.chalenge[0][1]= new Case(0,1);
+					this.chalenge[1][1]= new Case(1,1);
+					this.chalenge[2][0]= new Case(2,0);
+					this.chalenge[2][1]= new Case(2,1);
+					this.chalenge[2][2]= new Case(2,2);
 					
 					}catch (EOFException e) {
 					// c'est fini !
