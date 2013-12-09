@@ -1,4 +1,6 @@
 import java.awt.Color;
+import javax.swing.*;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -9,10 +11,12 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class Panneau extends JPanel implements KeyListener {
+public class Panneau extends JPanel implements KeyListener  {
+	
 	private int posX = 54 + 28;
 	private int posY = 51 + 28;
 	Image img_fond;
@@ -21,11 +25,17 @@ public class Panneau extends JPanel implements KeyListener {
 	Image img_mur;
 	Image img_etoile;
 	
+	public Fenetre fen; 
+	
+	
 	Plateau jeu;
 	
 	int i = 0, j = 0;
 
-	public Panneau() {
+	
+	public Panneau(Fenetre fen) {
+		
+		this.fen = fen;
 		this.setSize(800, 500);
 
 		// Ouverture des images
@@ -34,7 +44,7 @@ public class Panneau extends JPanel implements KeyListener {
 			img_sol1 = ImageIO.read(new File("src/images/plan.jpg"));
 			img_sol2 = ImageIO.read(new File("src/images/plan3.jpg"));
 			img_mur = ImageIO.read(new File("src/images/brique2.jpg"));
-			img_etoile = ImageIO.read(new File("src/images/etoile.gif"));
+			img_etoile = ImageIO.read(new File("src/images/etoile.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -48,8 +58,11 @@ public class Panneau extends JPanel implements KeyListener {
 	}
 
 	public void paintComponent(Graphics g) {
+		
+	
 		// System.out.println("Debut de l'affichage du panneau !");
 		Graphics2D g2 = (Graphics2D) g;
+		
 
 		// Pour une image de fond
 		g2.drawImage(img_fond, 0, 0, this.getWidth(), this.getHeight(), this);
@@ -85,22 +98,50 @@ public class Panneau extends JPanel implements KeyListener {
 			ecartVertical = ecartVertical + 30;
 			ecartHorizontal = 54;
 		}
+		
+		
+		//dessin du petit sol 
+		int ecartHorizontal2 = 570;
+		int ecartVertical2 = 50;
+
+		// Dessin du sol
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (i % 2 == 0) {// On dessine les cases paires
+					if (j % 2 == 0) {
+						g2.drawImage(img_sol1, ecartHorizontal2, ecartVertical2,
+								30, 30, this);
+					} else {
+						g2.drawImage(img_sol2, ecartHorizontal2, ecartVertical2,
+								30, 30, this);
+						// g2.drawRect(var1, var2, 30, 30);
+					}
+				} else { // On dessine les cases impaires
+					if (j % 2 == 0) {
+						g2.drawImage(img_sol2, ecartHorizontal2, ecartVertical2,
+								30, 30, this);
+						// g2.drawRect(var1, var2, 30, 30);
+					} else {
+						g2.drawImage(img_sol1, ecartHorizontal2, ecartVertical2,
+								30, 30, this);
+						// g2.drawRect(var1, var2, 30, 30);
+					}
+				}
+				ecartHorizontal2 = ecartHorizontal2 + 30;
+			}
+			ecartVertical2 = ecartVertical2 + 30;
+			ecartHorizontal2 = 570;
+		}
 		// la je vais recuperer la tableau d'alpha et afficher avec une
 		// boucle
 
-		// Case[][] tab = new Case[11][13] ;
-		// tab = Jeu.jeu.plateau[11][13];
-		// Plateau tab = new Plateau();
-		// tab = Jeu.jeu ;
-		if(jeu.partiEstFini()){
-			g2.drawImage(img_etoile, 700,700 ,
-					30, 30, this);
-		}
+		
 		int largeur = 32;
 		int longeur = 32;
+		
 
 		for (int i = 0; i < 10; i++) {
-			int k = i + i;
+		
 
 			for (int j = 0; j < 10; j++) {
 
@@ -157,9 +198,9 @@ public class Panneau extends JPanel implements KeyListener {
 							g.setColor(new Color(100, 100, 100));
 							g.fillRoundRect(posX + i * 30, posY + j * 30,
 									largeur, longeur, 13, 13);
-
+							
 					} 
-					}
+					}			
 				}
 
 			}
@@ -167,6 +208,19 @@ public class Panneau extends JPanel implements KeyListener {
 			
 
 		}
+		if(jeu.partiEstFini()){
+			
+			g2.drawImage(img_etoile, 555
+					,230 ,
+					60, 50, this);
+				g.setColor(Color.red);
+				Font font = new Font("Colibri",1,60);
+				g.setFont(font);
+				g.drawString("Felicitation  !", 50, 250);
+				
+		}
+		
+		
 
 		// Fonctions pour le chronometre
 
@@ -201,6 +255,7 @@ public class Panneau extends JPanel implements KeyListener {
 				}
 			}
 			jeu.affichePlateau();
+			jeu.afficheTableauDeBloc();
 			i++;
 		} else {
 			if (j == 0) {
@@ -212,10 +267,18 @@ public class Panneau extends JPanel implements KeyListener {
 		}
 		this.repaint();
 	}
+	
+	
+	
+	
+	
+	
 
 	public void keyReleased(KeyEvent event) {
 	}
 
 	public void keyTyped(KeyEvent event) {
 	}
+	
 }
+
