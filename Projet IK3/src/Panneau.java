@@ -1,5 +1,7 @@
 import java.awt.Color;
+
 import javax.swing.*;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+
+
 
 
 import javax.imageio.ImageIO;
@@ -28,7 +32,7 @@ public class Panneau extends JPanel implements KeyListener  {
 	public Fenetre fen; 
 	
 	
-	Plateau jeu;
+	//Plateau jeu;
 	
 	int i = 0, j = 0;
 
@@ -50,7 +54,7 @@ public class Panneau extends JPanel implements KeyListener  {
 		}
 
 		// Ouverture du plateau
-		jeu = new Plateau("src/file.txt");
+		jeu = new Plateau("src/file0.txt");
 
 		// Liaison du KeyListener avec le panneau
 		this.addKeyListener(this);
@@ -69,6 +73,8 @@ public class Panneau extends JPanel implements KeyListener  {
 
 		int ecartHorizontal = 49;
 		int ecartVertical = 45;
+		
+		
 
 		// Dessin du sol
 		for (int i = 0; i < 11; i++) {
@@ -132,12 +138,89 @@ public class Panneau extends JPanel implements KeyListener  {
 			ecartVertical2 = ecartVertical2 + 29;
 			ecartHorizontal2 = 570;
 		}
-		// la je vais recuperer la tableau d'alpha et afficher avec une
-		// boucle
+		// Dessin du master challenge 
+		
 
 		
-		int largeur = 30;
-		int longeur = 30;
+				int largeur2 = 29;
+				int longeur2 = 29;
+				
+
+				for (int i = 0; i < 10; i++) {
+				
+
+					for (int j = 0; j < 10; j++) {
+
+						if (jeu.plateau[i][j].getClasse().equals("Brique")) {
+
+							if ((i >= 1) && (j <= 9)) {
+								// les element qui de deplace en couleur bleu
+								if ((jeu.plateau[i - 1][j].getClasse().equals("Brique"))
+										&& (jeu.plateau[i][j].getClasse()
+												.equals("Brique"))) {
+
+									g.setColor(Color.blue);
+									g.fillRoundRect(posX + (i - 1) * 29, posY + j * 29,
+											largeur2 + 29, longeur2, 13, 13);
+								}
+
+								if ((jeu.plateau[i][j - 1].getClasse().equals("Brique"))
+										&& (jeu.plateau[i][j].getClasse()
+												.equals("Brique"))) {
+
+									g.setColor(Color.blue);
+									g.fillRoundRect(posX + i * 29, posY + (j - 1) * 29,
+											largeur2, longeur2 + 29, 13, 13);
+								} else {
+
+									g.setColor(Color.blue);
+									g.fillRoundRect(posX + (i) * 29, posY + j * 29,
+											largeur2, longeur2, 13, 13);
+								}
+
+							}
+						} else if (jeu.plateau[i][j].getClasse().equals("Mur")) {
+							// les element qui ne se deplace pas les murs en couleur
+							if ((i >= 1) && (i <= 9)) {
+								if ((jeu.plateau[i - 1][j].getClasse().equals("Mur"))
+										&& (jeu.plateau[i][j].getClasse().equals("Mur"))) {
+
+									g.setColor(new Color(100, 100, 100));
+									g.fillRoundRect(posX + (i - 1) * 29, posY + j * 29,
+											largeur2 + 29, longeur2, 14, 14);
+
+								}
+							}
+							if ((j >= 1) && (j <= 9)) {
+
+								if ((jeu.plateau[i][j - 1].getClasse().equals("Mur"))
+										&& (jeu.plateau[i][j].getClasse().equals("Mur"))) {
+
+									g.setColor(new Color(100, 100, 100));
+									g.fillRoundRect(posX + i * 29, posY + (j - 1) * 29,
+											largeur2, longeur2 + 29, 13, 13);
+
+								}else {
+									g.setColor(new Color(100, 100, 100));
+									g.fillRoundRect(posX + i * 29, posY + j * 29,
+											largeur2, longeur2, 13, 13);
+									
+							} 
+							}			
+						}
+
+					}
+					
+					
+
+				}
+		
+		// Je dessine le jeu 
+		
+
+		
+		int largeur = 29;
+		int longeur = 29;
 		
 
 		for (int i = 0; i < 10; i++) {
@@ -208,6 +291,22 @@ public class Panneau extends JPanel implements KeyListener  {
 			
 
 		}
+		//dire dans quel niveau on est :
+				
+				if(  s=="src/file1.txt"){
+					g.setColor(Color.white);
+					Font font = new Font("Colibri",1,60);
+					g.setFont(font);
+				g.drawString(" Niveau 1 !", 80, 430);
+				}
+				if(  s=="src/file0.txt"){
+					g.setColor(Color.white);
+					Font font = new Font("Colibri",1,60);
+					g.setFont(font);
+					g.drawString(" Niveau 0 !", 80, 430);
+					
+				}
+				
 	//	int nombreCoup=0; 
 		if(jeu.partiEstFini()){
 			
@@ -266,12 +365,30 @@ public class Panneau extends JPanel implements KeyListener  {
 			jeu.afficheTableauDeBloc();
 			i++;
 		} else {
-			if (j == 0) {
+			/*if (j == 0) {
 				jeu.afficheTableauDeBloc();
 				System.out.println("fin de parti . Nombre de coup " + i);
 			
 				j++;
-			}
+			
+			}*/
+		     System.out.println("fin de parti. Nombre de coup "+jeu.nombreDeCoup());
+             if(jeu.masterChalenger()){
+                     System.out.println("Genial master chalenge reussi");
+             }                                                        
+             j++;
+             s="src/file"+j+".txt";
+             File f= new File(s);
+             if(f.exists()){
+                     for(int v=0;v<15;v++){
+                         System.out.println();
+                 }
+                     System.out.println("NIVAU "+(j+1));
+                     jeu= new Plateau(s);
+             }else{
+                     System.out.println("Tu es un bon toi, tu a droit a une fessé");
+             }
+
 		}
 		this.repaint();
 	}
@@ -287,6 +404,9 @@ public class Panneau extends JPanel implements KeyListener  {
 
 	public void keyTyped(KeyEvent event) {
 	}
+	//static int j=0;
+	   String s="src/file"+j+".txt";
+	   Plateau jeu= new Plateau(s);
 	
 }
 
