@@ -1,13 +1,8 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -45,13 +40,25 @@ public class Fenetre1 extends JFrame {
 					}
 				}
 				jeu.affichePlateau();
-				i++;
+				jeu.afficheTableauDeBloc();
     	}else{
-    		if(j==0){
-    			jeu.afficheTableauDeBloc();
-    			System.out.println("fin de parti . Nombre de coup "+i);
+   
+    			System.out.println("fin de parti. Nombre de coup "+jeu.nombreDeCoup());
+    			if(jeu.masterChalenger()){
+    				System.out.println("Genial master chalenge reussi");
+    			}    			    			
     			j++;
-    		}
+    			s="fichier/file"+j+".txt";
+    			File f= new File(s);
+    			if(f.exists()){
+    				for(int v=0;v<15;v++){
+        				System.out.println();
+        			}
+	    			System.out.println("NIVAU "+(j+1));
+	    			jeu= new Plateau(s);
+    			}else{
+    				System.out.println("Tu es un bon toi, tu a droit a une fessé");
+    			}
     	}
      
     }
@@ -60,11 +67,17 @@ public class Fenetre1 extends JFrame {
 
     public void keyTyped(KeyEvent event) {}   	
   }   
-  static Plateau jeu= new Plateau("fichier/file.txt");
-  int i=0,j=0;
+  
+  static int j=0;
+  static String s="fichier/file"+j+".txt";
+  static Plateau jeu= new Plateau(s);
+ 
   public static  void main(String[] args){
-		System.out.println("taile:"+jeu.tableauDeBlock.size());
+	  System.out.println("NIVAU "+(j+1));
+		System.out.println("taille:"+jeu.tableauDeBlock.size());
 		jeu.affichePlateau();
+		//jeu.masterChalenge.affiche();
+		jeu.afficheTableauDeBloc();
 	  new Fenetre1();
 	  
   }

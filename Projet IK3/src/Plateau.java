@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Plateau {
 	protected int nbreDeCoup=0;
+	public InfosBlock masterChalenge = new InfosBlock();
 	public  Case[][] plateau = new Case[10][10];
 	public  ArrayList<InfosBlock> tableauDeBlock = new ArrayList<InfosBlock>();
 	/**
@@ -37,6 +38,12 @@ public class Plateau {
 							}
 					} 
 					miseAJourTableauDeBlock();
+					this.masterChalenge.ajouter(0,1);
+					this.masterChalenge.ajouter(1,1);
+					this.masterChalenge.ajouter(2,0);
+					this.masterChalenge.ajouter(2,1);
+					this.masterChalenge.ajouter(2,2);
+					
 					}catch (EOFException e) {
 					// c'est fini !
 						System.out.println("fichier chargée avec succes");
@@ -392,6 +399,14 @@ public class Plateau {
 	
 	public int nombreDeCoup(){
 		return nbreDeCoup;
+	}
+	
+	public boolean masterChalenger(){
+		InfosBlock aux= tableauDeBlock.get(0).cloneB();
+		InfosBlock t=aux.transition();
+		t.trie();
+		
+		return (t.egale(this.masterChalenge));
 	}
 }//fin classe
 

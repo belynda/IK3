@@ -30,4 +30,6 @@ public class Brique extends Case{
 	public String getClasse(){
 		return "Brique";
 	}
+	
+	
 }

@@ -15,6 +15,12 @@ public class InfosBrique {
 		this.etat=false;
 	}
 	
+	public InfosBrique(InfosBrique b){
+		this.x=b.x;
+		this.y=b.y;
+		this.etat=b.etat;
+	}
+	
 	public void affiche(){
 		System.out.print("x:"+x+"y:"+y+"\n");
 	}
