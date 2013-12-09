@@ -21,64 +21,64 @@ public class Fenetre1 extends JFrame {
 
   class ClavierListener implements KeyListener{
     public void keyPressed(KeyEvent event) {
-    	
-    	if(!jeu.partiEstFini()){
-		    	System.out.println("direction");
-				if(event.getKeyCode()==38){
-					jeu.deplacerEnHaut();
-				}else{
-					if(event.getKeyCode()==40){
-						jeu.deplacerEnBas();
-					}else{
-						if(event.getKeyCode()==39){
-							jeu.deplacerAGauche();
-						}else{
-							if(event.getKeyCode()==37){
-							jeu.deplacerADroite();
-							}
-						}
-					}
-				}
-				jeu.affichePlateau();
-				jeu.afficheTableauDeBloc();
-    	}else{
+            
+            if(!jeu.partiEstFini()){
+                            System.out.println("direction");
+                                if(event.getKeyCode()==38){
+                                        jeu.deplacerEnHaut();
+                                }else{
+                                        if(event.getKeyCode()==40){
+                                                jeu.deplacerEnBas();
+                                        }else{
+                                                if(event.getKeyCode()==39){
+                                                        jeu.deplacerAGauche();
+                                                }else{
+                                                        if(event.getKeyCode()==37){
+                                                        jeu.deplacerADroite();
+                                                        }
+                                                }
+                                        }
+                                }
+                                jeu.affichePlateau();
+                                jeu.afficheTableauDeBloc();
+            }else{
    
-    			System.out.println("fin de parti. Nombre de coup "+jeu.nombreDeCoup());
-    			if(jeu.masterChalenger()){
-    				System.out.println("Genial master chalenge reussi");
-    			}    			    			
-    			j++;
-    			s="fichier/file"+j+".txt";
-    			File f= new File(s);
-    			if(f.exists()){
-    				for(int v=0;v<15;v++){
-        				System.out.println();
-        			}
-	    			System.out.println("NIVAU "+(j+1));
-	    			jeu= new Plateau(s);
-    			}else{
-    				System.out.println("Tu es un bon toi, tu a droit a une fessé");
-    			}
-    	}
+                            System.out.println("fin de parti. Nombre de coup "+jeu.nombreDeCoup());
+                            if(jeu.masterChalenger()){
+                                    System.out.println("Genial master chalenge reussi");
+                            }                                                        
+                            j++;
+                            s="src/file"+j+".txt";
+                            File f= new File(s);
+                            if(f.exists()){
+                                    for(int v=0;v<15;v++){
+                                        System.out.println();
+                                }
+                                    System.out.println("NIVAU "+(j+1));
+                                    jeu= new Plateau(s);
+                            }else{
+                                    System.out.println("Tu es un bon toi, tu a droit a une fessé");
+                            }
+            }
      
     }
 
     public void keyReleased(KeyEvent event) {}
 
-    public void keyTyped(KeyEvent event) {}   	
+    public void keyTyped(KeyEvent event) {}           
   }   
   
   static int j=0;
-  static String s="fichier/file"+j+".txt";
+  static String s="src/file"+j+".txt";
   static Plateau jeu= new Plateau(s);
  
   public static  void main(String[] args){
-	  System.out.println("NIVAU "+(j+1));
-		System.out.println("taille:"+jeu.tableauDeBlock.size());
-		jeu.affichePlateau();
-		//jeu.masterChalenge.affiche();
-		jeu.afficheTableauDeBloc();
-	  new Fenetre1();
-	  
+          System.out.println("NIVAU "+(j+1));
+                System.out.println("taille:"+jeu.tableauDeBlock.size());
+                jeu.affichePlateau();
+                //jeu.masterChalenge.affiche();
+                jeu.afficheTableauDeBloc();
+          new Fenetre1();
+          
   }
 }

@@ -3,6 +3,9 @@ import java.io.*;
 public class Jeu {
 	static Plateau jeu= new Plateau("src/file.txt");
 	
+
+	
+	
 	
 	public static  void main(String[] args){
 		Scanner sc = new Scanner(System.in);
