@@ -8,10 +8,29 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Plateau {
+
 	protected int nbreDeCoup=0;
+	
+	/** 
+	 * contient la figure a faire a la fin dans un tableau
+	 * @see Case
+	 */
+	
 	public Case[][] chalenge= new Case [5][6];
+	/** 
+	 * contient la figure a faire a la fin
+	 * @see InfosBlock
+	 */
 	public InfosBlock masterChalenge = new InfosBlock();
-	public  Case[][] plateau = new Case[10][10];
+	/** 
+	 * tableau contenant les cases
+	 * @see InfosBlock
+	 */
+	public Case[][] plateau = new Case[10][10];
+	/** 
+	 * contient la figure a faire a la fin
+	 * @see InfosBlock
+	 */
 	public  ArrayList<InfosBlock> tableauDeBlock = new ArrayList<InfosBlock>();
 	/**
 	 * Constructeur qui prend les indices de chaque blocks positionner dans le plateau
@@ -44,11 +63,17 @@ public class Plateau {
 					this.masterChalenge.ajouter(2,0);
 					this.masterChalenge.ajouter(2,1);
 					this.masterChalenge.ajouter(2,2);
-					this.chalenge[0][1]= new Case(0,1);
-					this.chalenge[1][1]= new Case(1,1);
-					this.chalenge[2][0]= new Case(2,0);
-					this.chalenge[2][1]= new Case(2,1);
-					this.chalenge[2][2]= new Case(2,2);
+					
+					for(int i=0;i<chalenge.length;i++){
+						for(int j=0;j<chalenge[i].length;j++){
+							chalenge[i][j]= new Case(i,j);
+						}
+					}
+					this.chalenge[0][1]= new Brique(0,1);
+					this.chalenge[1][1]= new Brique(1,1);
+					this.chalenge[2][0]= new Brique(2,0);
+					this.chalenge[2][1]= new Brique(2,1);
+					this.chalenge[2][2]= new Brique(2,2);
 					
 					}catch (EOFException e) {
 					// c'est fini !
@@ -216,7 +241,11 @@ public class Plateau {
 				return true;
 		}		
 	}//fin bouger en haut
-	
+	/**
+	 * Verifie si un bloc peut bouger en Bas.
+	 * @param Liste des element permettant le deplacement en haut 
+	 * @return vrai(true) si le mouvement est posible le haut vers sinon faut
+	 */
 	public boolean peuBougerEnBas(InfosBlock block){
 		if(block.estVide()){
 			System.out.println("Eureur pas d'element en haut du bloc");
@@ -235,7 +264,11 @@ public class Plateau {
 				return true;
 		}		
 	}//fin bouger en bas
-	
+	/**
+	 * Verifie si un bloc peut bouger en Gauche.
+	 * @param Liste des element permettant le deplacement en haut 
+	 * @return vrai(true) si le mouvement est posible le haut vers sinon faut
+	 */
 	public boolean peuBougerAGauche(InfosBlock block){
 		if(block.estVide()){
 			System.out.println("Eureur pas d'element en haut du bloc");
@@ -255,7 +288,11 @@ public class Plateau {
 				return true;
 		}		
 	}//fin bouger A gauche
-	
+	/**
+	 * Verifie si un bloc peut bouger en Droite.
+	 * @param Liste des element permettant le deplacement en haut 
+	 * @return vrai(true) si le mouvement est posible le haut vers sinon faut
+	 */
 	public boolean peuBougerADroite(InfosBlock block){
 		if(block.estVide()){
 			System.out.println("Eureur pas d'element en haut du bloc");
@@ -275,9 +312,9 @@ public class Plateau {
 		}		
 	}//fin bouger A Droite
 
-	/** Fusion deux bloc en metant a jour les elements de directionnements haut bas gauche et droite.
-	 * @param block1 represente le premier block 
-	 * @param block2 represente le deuxieme block 
+	/** Fusion le bloc de nemero i et j..
+	 * @param i represente le premier block 
+	 * @param j represente le deuxieme block 
 	 * @return void
 	 */
 	public void fusionBlock(int i,int j){
@@ -286,10 +323,10 @@ public class Plateau {
 
 	}//fin fusion
 	/**
-	 * actualise les elements de haut lors du fusion de deux blocks.
-	 * @param block1 represente le haut du premier block 
-	 * @param block2 represente le haut deuxieme block 
-	 * @return les nouveaux elements du haut
+	 * Reherche l indice du bloc de  l element de cordonnée x,y
+	 * @param x c est l abcisse
+	 * @param y c est ordonnée
+	 * @return l indice du bloc sinon -1( en realité ne retourn jamais -1)
 	 */
 	
 	public int indiceDuBloc(int x,int y){
@@ -309,7 +346,7 @@ public class Plateau {
 		return tableauDeBlock.size()==1;
 	}
 	/**
-	 * affiche juste le plateau de jeu
+	 * affiche juste le plateau de jeu en mode connsole
 	 * @param aucun
 	 * @return void
 	 */
@@ -329,13 +366,42 @@ public class Plateau {
 			System.out.println();
 		}
 	}
-	
+	/**
+	 * affiche juste Le master chalenge a realiser en mode connsole
+	 * @param aucun
+	 * @return void
+	 */
+	public  void afficheMaster(){
+		for(Case[] c:this.chalenge){
+			for(Case v: c){
+				if(v.getClasse().equalsIgnoreCase("vide")){
+					System.out.print("  ");
+				}else{
+					if(v.getClasse().equalsIgnoreCase("mur")){
+						System.out.print("X ");
+					}else{
+						System.out.print("B ");
+					}
+				}
+			}
+			System.out.println();
+		}
+	}
+	/**
+	 * affiche le tableau de bloc en mode console
+	 * @param aucun
+	 * @return void
+	 */
 	public  void afficheTableauDeBloc(){
 		for(InfosBlock ib: tableauDeBlock){
 			ib.affiche(); 
 		}
 	}
-
+	/**
+	 * reupere les bloks de façon individuelle et les met dans le tableau de bloc
+	 * @param aucun
+	 * @return void
+	 */
 	public  void miseAJourTableauDeBlock(){
 		for(int i=0;i<plateau.length;i++){
 			for(int j=0;j<plateau[i].length;j++){
@@ -346,7 +412,11 @@ public class Plateau {
 		}
 		miseAJourBlock();
 	}
-
+	/**
+	 * fusion les block cote  cote apres avoir charger
+	 * @param aucun
+	 * @return void
+	 */
 	public void miseAJourBlock(){
 		for(int i=0; i<tableauDeBlock.size()-1;i++){
 			for(int j=i+1; j<tableauDeBlock.size();j++){					
@@ -357,7 +427,11 @@ public class Plateau {
 			}
 		}
 	}// miseAjour A Block
-	
+	/**
+	 * Sauvegarde les emplacements de chaque block
+	 * @param aucun
+	 * @return void
+	 */
 	public void sauvegardePartie(){
 		 DataInputStream dis;
 		    DataOutputStream dos;
@@ -402,11 +476,19 @@ public class Plateau {
 		    }     	
 		
 	}// fin sauvegarde
-	
+	/**
+	 * Nombre de coup a un moment donnée 
+	 * @param aucun
+	 * @return nombre coup
+	 */
 	public int nombreDeCoup(){
 		return nbreDeCoup;
 	}
-	
+	/**
+	 *verifie si la configuration de le fin est la meme que le master chalange 
+	 * @param aucun
+	 * @return nombre coup
+	 */
 	public boolean masterChalenger(){
 		InfosBlock aux= tableauDeBlock.get(0).cloneB();
 		InfosBlock t=aux.transition();
